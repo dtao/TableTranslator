@@ -4,7 +4,9 @@ $(document).ready(function() {
       url: "/",
       type: "POST",
       data: {
-        raw: $("textarea").val()
+        "input": $("textarea").val(),
+        "input-format": $("select#input-format").val(),
+        "output-format": $("select#output-format").val()
       },
       success: function(response) {
         $(".output").html(response);

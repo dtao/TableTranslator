@@ -12,12 +12,14 @@ post "/" do
 
   case params["input-format"]
   when "mysql"
+    translation.from_mysql
   else
     translation.from_mysql
   end
 
   case params["output-format"]
   when "html"
+    translation.to_html
   else
     translation.to_html
   end
