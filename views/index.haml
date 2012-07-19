@@ -1,0 +1,21 @@
+!!!
+%head
+  %title Table Translator
+  %link(rel="stylesheet" href="/app.css")
+  %script(type="text/javascript" src="/jquery-1.7.2.min.js")
+  %script(type="text/javascript" src="/app.js")
+
+%body
+  .input
+    .instructions
+      Enter a table in
+      %select(name="input-format")
+        %option(value="mysql" selected="selected") MySQL
+      format
+    %textarea
+    .instructions
+      Translate to
+      %select(name="output-format")
+        %option(value="html" selected="selected") HTML
+      %button Go!
+  .output

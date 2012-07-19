@@ -1,0 +1,48 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.input, .output {
+  position: absolute;
+  top: 1%;
+  bottom: 1%;
+  text-align: center
+}
+
+.input {
+  left: 1%;
+  right: 50.5%;
+}
+
+.input textarea {
+  font-family: monospace;
+  margin: 2ex auto;
+  height: 300px;
+  width: 100%;
+}
+
+.input button {
+  margin: auto;
+}
+
+.output {
+  left: 50.5%;
+  right: 1%;
+}
+
+table {
+  border-collapse: collapse;
+  margin: auto;
+  text-align: left;
+}
+
+th, td {
+  padding: 2ex 2em;
+}
+
+th {
+  border-bottom: 2px solid black;
+}
