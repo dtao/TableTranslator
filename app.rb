@@ -20,6 +20,8 @@ post "/" do
   case params["output-format"]
   when "html"
     translation.to_html
+  when "json"
+    translation.to_json
   else
     translation.to_html
   end

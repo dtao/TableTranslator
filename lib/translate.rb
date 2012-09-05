@@ -1,8 +1,11 @@
+require "json"
+
 module Translate
   class Translation
     def initialize(input)
       @input = input
       @table = nil
+      @columns = nil
     end
 
     def from_mysql
@@ -18,6 +21,18 @@ module Translate
       html << "</table>"
     end
 
+    def to_json
+      records = []
+      @table[1..-1].each do |row|
+        record = {}
+        row.each_with_index do |cell, i|
+          record[@columns[i]] = cell
+        end
+        records << record
+      end
+      "<pre>#{JSON.pretty_generate(records)}</pre>"
+    end
+
     private
     def parse_mysql
       @table = []
@@ -25,6 +40,7 @@ module Translate
         next if line.match(/^[\+\-]*$/) # Skip pure border lines.
         @table << line.split("|").map(&:strip).reject(&:empty?)
       end
+      @columns = @table[0]
     end
   end
 
