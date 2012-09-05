@@ -6,6 +6,7 @@ module Translate
       @input = input
       @table = nil
       @columns = nil
+      @rows = nil
     end
 
     def from_mysql
@@ -14,8 +15,8 @@ module Translate
     end
 
     def to_html
-      html = "<table><tr class=\"header-row\">" + @table[0].map { |header| "<th>#{header}</th>" }.join + "</tr>"
-      @table[1..-1].each do |row|
+      html = "<table><tr class=\"header-row\">" + @columns.map { |header| "<th>#{header}</th>" }.join + "</tr>"
+      @rows.each do |row|
         html << "<tr>" + row.map { |value| "<td>#{value}</td>" }.join + "</tr>"
       end
       html << "</table>"
@@ -23,7 +24,7 @@ module Translate
 
     def to_json
       records = []
-      @table[1..-1].each do |row|
+      @rows.each do |row|
         record = {}
         row.each_with_index do |cell, i|
           record[@columns[i]] = cell
@@ -33,6 +34,24 @@ module Translate
       "<pre>#{JSON.pretty_generate(records)}</pre>"
     end
 
+    def to_ruby
+      ruby = "["
+      @rows.each_with_index do |row, i|
+        ruby << "," if i > 0
+        ruby << "\n  {"
+        row.each_with_index.each do |cell, j|
+          key = @columns[j].gsub(/[^\w]/, "_")
+          value = cell.gsub('"', '\"')
+          ruby << "," if j > 0
+          ruby << "\n    :#{key} => \"#{value}\""
+        end
+        ruby << "\n  }"
+        ruby << "\n" if i == (@rows.count - 1)
+      end
+      ruby << "]"
+      "<pre>#{ruby}</pre>"
+    end
+
     private
     def parse_mysql
       @table = []
@@ -40,7 +59,8 @@ module Translate
         next if line.match(/^[\+\-]*$/) # Skip pure border lines.
         @table << line.split("|").map(&:strip).reject(&:empty?)
       end
-      @columns = @table[0]
+      @columns = @table.first || []
+      @rows = @table[1..-1] || []
     end
   end
 

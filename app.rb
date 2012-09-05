@@ -22,6 +22,8 @@ post "/" do
     translation.to_html
   when "json"
     translation.to_json
+  when "ruby"
+    translation.to_ruby
   else
     translation.to_html
   end
