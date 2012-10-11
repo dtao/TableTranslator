@@ -14,6 +14,10 @@ module Translate
       self
     end
 
+    def to_csv
+      ([row_to_csv(@columns)] + @rows.map { |row| row_to_csv(row) }).join("\n")
+    end
+
     def to_html
       html = "<table><tr class=\"header-row\">" + @columns.map { |header| "<th>#{header}</th>" }.join + "</tr>"
       @rows.each do |row|
@@ -31,7 +35,7 @@ module Translate
         end
         records << record
       end
-      "<pre>#{JSON.pretty_generate(records)}</pre>"
+      JSON.pretty_generate(records)
     end
 
     def to_ruby
@@ -49,7 +53,7 @@ module Translate
         ruby << "\n" if i == (@rows.count - 1)
       end
       ruby << "]"
-      "<pre>#{ruby}</pre>"
+      ruby
     end
 
     private
@@ -61,6 +65,18 @@ module Translate
       end
       @columns = @table.first || []
       @rows = @table[1..-1] || []
+    end
+
+    def row_to_csv(row)
+      row.map { |cell| qualify(cell, ',', '"') }.join(",")
+    end
+
+    def qualify(text, delimiter, qualifier)
+      if text.include?(delimiter)
+        qualifier + text.gsub(qualifier, "\\#{qualifier}") + qualifier
+      else
+        text
+      end
     end
   end
 

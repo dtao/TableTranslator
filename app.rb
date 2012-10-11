@@ -18,12 +18,14 @@ post "/" do
   end
 
   case params["output-format"]
+  when "csv"
+    "<pre>#{translation.to_csv}</pre>"
   when "html"
     translation.to_html
   when "json"
-    translation.to_json
+    "<pre>#{translation.to_json}</pre>"
   when "ruby"
-    translation.to_ruby
+    "<pre>#{translation.to_ruby}</pre>"
   else
     translation.to_html
   end
