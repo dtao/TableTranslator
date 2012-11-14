@@ -20,6 +20,18 @@ module Translate
       self
     end
 
+    def parse_numbers
+      @rows.each do |row|
+        (0...row.length).each do |i|
+          if row[i].match(/^\d+$/)
+            row[i] = row[i].to_i
+          elsif row[i].match(/^\d*\.\d+$/)
+            row[i] = row[i].to_f
+          end
+        end
+      end
+    end
+
     def to_csv
       ([row_to_csv(@columns)] + @rows.map { |row| row_to_csv(row) }).join("\n")
     end
@@ -43,9 +55,9 @@ module Translate
         ruby << "\n  {"
         row.each_with_index.each do |cell, j|
           key = @columns[j].gsub(/[^\w]/, "_")
-          value = cell.gsub('"', '\"')
+          value = cell.is_a?(String) ? "\"#{cell.gsub('"', '\"')}\"" : cell
           ruby << "," if j > 0
-          ruby << "\n    :#{key} => \"#{value}\""
+          ruby << "\n    :#{key} => #{value}"
         end
         ruby << "\n  }"
         ruby << "\n" if i == (@rows.count - 1)

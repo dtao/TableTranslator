@@ -3,6 +3,12 @@ require "sinatra"
 
 require File.join(File.dirname(__FILE__), "lib", "translate")
 
+helpers do
+  def param_checked?(param)
+    ["1", "true"].any? { |val| params[param].to_s == val }
+  end
+end
+
 get "/" do
   haml :index
 end
@@ -17,6 +23,10 @@ post "/" do
     translation.from_delimited("\t")
   else
     translation.from_mysql
+  end
+
+  if param_checked?("parse-numbers")
+    translation.parse_numbers
   end
 
   case params["output-format"]
