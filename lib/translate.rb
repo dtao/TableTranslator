@@ -25,6 +25,8 @@ module Translate
         (0...row.length).each do |i|
           if row[i].match(/^\d+$/)
             row[i] = row[i].to_i
+          elsif row[i].match(/^\d{1,3}(?:,\d{3})*$/)
+            row[i] = row[i].gsub(",", "").to_i
           elsif row[i].match(/^\d*\.\d+$/)
             row[i] = row[i].to_f
           end
