@@ -13,6 +13,8 @@ post "/" do
   case params["input-format"]
   when "mysql"
     translation.from_mysql
+  when "tsv"
+    translation.from_delimited("\t")
   else
     translation.from_mysql
   end

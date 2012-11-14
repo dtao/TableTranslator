@@ -14,6 +14,11 @@ module Translate
       self
     end
 
+    def from_delimited(delimiter)
+      parse_delimited(delimiter)
+      self
+    end
+
     def to_csv
       ([row_to_csv(@columns)] + @rows.map { |row| row_to_csv(row) }).join("\n")
     end
@@ -62,6 +67,15 @@ module Translate
       @input.lines.each_with_index do |line, index|
         next if line.match(/^[\+\-]*$/) # Skip pure border lines.
         @table << line.split("|").map(&:strip).reject(&:empty?)
+      end
+      @columns = @table.first || []
+      @rows = @table[1..-1] || []
+    end
+
+    def parse_delimited(delimiter)
+      @table = []
+      @input.lines.each_with_index do |line, index|
+        @table << line.split(delimiter).map(&:strip)
       end
       @columns = @table.first || []
       @rows = @table[1..-1] || []
