@@ -1,4 +1,5 @@
 require "json"
+require "yaml"
 
 module Translate
   class Translation
@@ -32,15 +33,7 @@ module Translate
     end
 
     def to_json
-      records = []
-      @rows.each do |row|
-        record = {}
-        row.each_with_index do |cell, i|
-          record[@columns[i]] = cell
-        end
-        records << record
-      end
-      JSON.pretty_generate(records)
+      JSON.pretty_generate(rows_to_records)
     end
 
     def to_ruby
@@ -61,6 +54,10 @@ module Translate
       ruby
     end
 
+    def to_yaml
+      rows_to_records.to_yaml
+    end
+
     private
     def parse_mysql
       @table = []
@@ -79,6 +76,18 @@ module Translate
       end
       @columns = @table.first || []
       @rows = @table[1..-1] || []
+    end
+
+    def rows_to_records
+      records = []
+      @rows.each do |row|
+        record = {}
+        row.each_with_index do |cell, i|
+          record[@columns[i]] = cell
+        end
+        records << record
+      end
+      records
     end
 
     def row_to_csv(row)
