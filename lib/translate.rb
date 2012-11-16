@@ -1,4 +1,5 @@
 require "json"
+require "nokogiri"
 require "yaml"
 
 module Translate
@@ -17,6 +18,11 @@ module Translate
 
     def from_delimited(delimiter)
       parse_delimited(delimiter)
+      self
+    end
+
+    def from_html
+      parse_html
       self
     end
 
@@ -52,12 +58,17 @@ module Translate
 
     def to_ruby
       ruby = "["
+
+      keys = @columns.map do |column|
+        column.gsub(/[^\w]/, "_").gsub("\n", "\\n")
+      end
+
       @rows.each_with_index do |row, i|
         ruby << "," if i > 0
         ruby << "\n  {"
         row.each_with_index.each do |cell, j|
-          key = @columns[j].gsub(/[^\w]/, "_")
-          value = cell.is_a?(String) ? "\"#{cell.gsub('"', '\"')}\"" : cell
+          key = keys[j]
+          value = cell.is_a?(String) ? "\"#{escape(cell)}\"" : cell
           ruby << "," if j > 0
           ruby << "\n    :#{key} => #{value}"
         end
@@ -79,8 +90,7 @@ module Translate
         next if line.match(/^[\+\-]*$/) # Skip pure border lines.
         @table << line.split("|").map(&:strip).reject(&:empty?)
       end
-      @columns = @table.first || []
-      @rows = @table[1..-1] || []
+      set_columns_and_rows()
     end
 
     def parse_delimited(delimiter)
@@ -88,6 +98,19 @@ module Translate
       @input.lines.each_with_index do |line, index|
         @table << line.split(delimiter).map(&:strip)
       end
+      set_columns_and_rows()
+    end
+
+    def parse_html
+      @table = []
+      html_doc = Nokogiri::HTML.parse(@input)
+      html_doc.css("tr").each do |html_row|
+        @table << html_row.css("td", "th").map(&:text).map(&:strip)
+      end
+      set_columns_and_rows()
+    end
+
+    def set_columns_and_rows
       @columns = @table.first || []
       @rows = @table[1..-1] || []
     end
@@ -105,15 +128,23 @@ module Translate
     end
 
     def row_to_csv(row)
-      row.map { |cell| qualify(cell, ',', '"') }.join(",")
+      row.map { |cell| qualify(escape(cell), ',', '"') }.join(",")
+    end
+
+    def escape(text)
+      if text.is_a?(String) && text.include?("\n")
+        text = text.gsub(/\n/, "\\n").gsub(/"/, "\\\"")
+      end
+
+      text
     end
 
     def qualify(text, delimiter, qualifier)
-      if text.is_a?(String) && text.include?(delimiter)
-        qualifier + text.gsub(qualifier, "\\#{qualifier}") + qualifier
-      else
-        text
+      if text.is_a?(String) && (delimiter.nil? || text.include?(delimiter))
+        text = qualifier + text.gsub(qualifier, "\\#{qualifier}") + qualifier
       end
+
+      text
     end
   end
 

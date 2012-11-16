@@ -19,6 +19,8 @@ post "/" do
   case params["input-format"]
   when "mysql"
     translation.from_mysql
+  when "html"
+    translation.from_html
   when "tsv"
     translation.from_delimited("\t")
   else
