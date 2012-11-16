@@ -109,7 +109,7 @@ module Translate
     end
 
     def qualify(text, delimiter, qualifier)
-      if text.include?(delimiter)
+      if text.is_a?(String) && text.include?(delimiter)
         qualifier + text.gsub(qualifier, "\\#{qualifier}") + qualifier
       else
         text
