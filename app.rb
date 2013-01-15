@@ -23,6 +23,8 @@ post "/" do
     translation.from_html
   when "tsv"
     translation.from_delimited("\t")
+  when "yaml"
+    translation.from_yaml
   else
     translation.from_mysql
   end

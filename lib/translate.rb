@@ -26,9 +26,16 @@ module Translate
       self
     end
 
+    def from_yaml
+      parse_yaml
+      self
+    end
+
     def parse_numbers
       @rows.each do |row|
         (0...row.length).each do |i|
+          next if !row[i].is_a?(String)
+
           if row[i].match(/^\d+$/)
             row[i] = row[i].to_i
           elsif row[i].match(/^\d{1,3}(?:,\d{3})*$/)
@@ -108,6 +115,12 @@ module Translate
         @table << html_row.css("td", "th").map(&:text).map(&:strip)
       end
       set_columns_and_rows()
+    end
+
+    def parse_yaml
+      hashes = YAML.load(@input)
+      @columns = hashes.first.keys
+      @rows = hashes.map { |hash| @columns.map { |column| hash[column] } }
     end
 
     def set_columns_and_rows
