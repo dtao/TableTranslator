@@ -1,10 +1,12 @@
 source :rubygems
 
+gem "sinatra"
+gem "thin"
+
 gem "haml"
 gem "json"
 gem "nokogiri"
-gem "sinatra"
-gem "thin"
+gem "safe_yaml"
 
 group :development do
   gem "shotgun"

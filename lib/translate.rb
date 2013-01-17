@@ -1,6 +1,6 @@
 require "json"
 require "nokogiri"
-require "yaml"
+require "safe_yaml"
 
 module Translate
   class Translation
@@ -118,7 +118,7 @@ module Translate
     end
 
     def parse_yaml
-      hashes = YAML.load(@input)
+      hashes = YAML.safe_load(@input)
       @columns = hashes.first.keys
       @rows = hashes.map { |hash| @columns.map { |column| hash[column] } }
     end
