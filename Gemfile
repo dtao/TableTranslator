@@ -12,4 +12,5 @@ gem "safe_yaml"
 
 group :development do
   gem "shotgun"
+  gem "tux"
 end

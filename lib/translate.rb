@@ -118,7 +118,7 @@ module Translate
     end
 
     def parse_yaml
-      hashes = YAML.safe_load(@input)
+      hashes = YAML.load(@input) # safe thanks to safe_yaml gem
       @columns = hashes.first.keys
       @rows = hashes.map { |hash| @columns.map { |column| hash[column] } }
     end
