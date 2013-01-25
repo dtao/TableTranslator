@@ -1,5 +1,7 @@
 $(document).ready(function() {
   $("button").click(function() {
+    $(".output").removeClass("success");
+
     $.ajax({
       url: "/",
       type: "POST",
@@ -10,7 +12,7 @@ $(document).ready(function() {
         "parse-numbers": $("input#parse-numbers").is(":checked")
       },
       success: function(response) {
-        $(".output").html(response);
+        $(".output").addClass("success").html(response);
       },
       error: function(error) {
         $(".output").text("Crap, something went wrong!");

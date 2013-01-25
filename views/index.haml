@@ -11,11 +11,12 @@
     .top-instructions
 
       Enter a table in
-      %select#input-format(name="input-format")
-        %option(value="mysql" selected="selected") MySQL
-        %option(value="html") HTML
-        %option(value="tsv") TSV
-        %option(value="yaml") YAML
+      .dropdown
+        %select#input-format(name="input-format")
+          %option(value="mysql" selected="selected") MySQL
+          %option(value="html") HTML
+          %option(value="tsv") TSV
+          %option(value="yaml") YAML
       format
 
     %textarea
@@ -23,17 +24,18 @@
     .bottom-instructions
 
       Translate to
-      %select#output-format(name="output-format")
-        %option(value="csv") CSV
-        %option(value="html" selected="selected") HTML
-        %option(value="json") JSON
-        %option(value="ruby") Ruby
-        %option(value="yaml") YAML
+      .dropdown
+        %select#output-format(name="output-format")
+          %option(value="csv") CSV
+          %option(value="html" selected="selected") HTML
+          %option(value="json") JSON
+          %option(value="ruby") Ruby
+          %option(value="yaml") YAML
 
       %label
         %input#parse-numbers(name="parse-numbers" type="checkbox")
         Parse numbers
 
-      %button Go!
+      %button Go
 
   .output

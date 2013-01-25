@@ -3,6 +3,8 @@ html, body {
   width: 100%;
   margin: 0;
   padding: 0;
+
+  font-family: Helvetica, Arial, sans-serif;
 }
 
 .input, .output {
@@ -16,7 +18,10 @@ html, body {
 .input {
   left: 0;
   right: 50%;
-  text-align: center
+  font-size: 32px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  text-align: center;
 }
 
 .input .top-instructions {
@@ -28,6 +33,63 @@ html, body {
   line-height: 50px;
 }
 
+.input .dropdown {
+  position: relative;
+  top: -2px;
+  display: inline-block;
+  width: 120px;
+  height: 32px;
+  overflow: hidden;
+  background: url("/down.png") no-repeat right #ddd;
+  border: 1px solid #ccc;
+  vertical-align: middle;
+}
+
+.input .dropdown select {
+  background: transparent;
+  width: 144px;
+  margin-left: -4px;
+  padding-left: 10px;
+  font-size: 16px;
+  line-height: 1;
+  border: 0;
+  border-radius: 0;
+  height: 32px;
+}
+
+.input .dropdown select:active {
+  border: none;
+}
+
+.input label,
+.input input,
+.input button {
+  position: relative;
+  top: -2px;
+  margin: 0 5px;
+}
+
+.input label {
+  font-size: 24px;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+.input input,
+.input button {
+  display: inline-block;
+  margin: 0 5px;
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+.input button {
+  width: 60px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 .input textarea {
   position: absolute;
   top: 50px;
@@ -35,6 +97,7 @@ html, body {
   left: 10px;
   right: 10px;
   font-family: monospace;
+  font-size: 16px;
   padding: 10px;
 }
 
@@ -47,13 +110,14 @@ html, body {
   line-height: 50px;
 }
 
-.input button {
-  margin: auto;
-}
-
 .output {
+  background-color: #81C6DD;
   left: 50%;
   right: 0;
+}
+
+.output.success {
+  background-color: #E9B64D;
 }
 
 table {
