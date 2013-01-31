@@ -1,6 +1,6 @@
 $(document).ready(function() {
   $("button").click(function() {
-    $(".output").removeClass("success");
+    $(".output").removeClass("success").addClass("loading");
 
     $.ajax({
       url: "/",
@@ -16,6 +16,9 @@ $(document).ready(function() {
       },
       error: function(error) {
         $(".output").text("Crap, something went wrong!");
+      },
+      complete: function() {
+        $(".output").removeClass("loading");
       }
     });
   });

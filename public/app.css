@@ -116,8 +116,16 @@ html, body {
   right: 0;
 }
 
+.output.loading {
+  background: #FFFFFF url("/loading.gif") no-repeat center;
+}
+
+.output.loading * {
+  display: none;
+}
+
 .output.success {
-  background-color: #E9B64D;
+  background-color: #DDDDDD;
 }
 
 table {
