@@ -42,6 +42,8 @@ post "/" do
     "<pre>#{translation.to_json}</pre>"
   when "ruby"
     "<pre>#{translation.to_ruby}</pre>"
+  when "tsv"
+    "<pre>#{translation.to_tsv}</pre>"
   when "yaml"
     "<pre>#{translation.to_yaml}</pre>"
   else

@@ -51,6 +51,10 @@ module Translate
       ([row_to_csv(@columns)] + @rows.map { |row| row_to_csv(row) }).join("\n")
     end
 
+    def to_tsv
+      ([row_to_tsv(@columns)] + @rows.map { |row| row_to_tsv(row) }).join("\n")
+    end
+
     def to_html
       html = "<table><tr class=\"header-row\">" + @columns.map { |header| "<th>#{header}</th>" }.join + "</tr>"
       @rows.each do |row|
@@ -140,8 +144,16 @@ module Translate
       records
     end
 
+    def row_to_delimited(row, delimiter, qualifier='"')
+      row.map { |cell| qualify(escape(cell), delimiter, qualifier) }.join(delimiter)
+    end
+
     def row_to_csv(row)
-      row.map { |cell| qualify(escape(cell), ',', '"') }.join(",")
+      row_to_delimited(row, ",")
+    end
+
+    def row_to_tsv(row)
+      row_to_delimited(row, "\t")
     end
 
     def escape(text)
